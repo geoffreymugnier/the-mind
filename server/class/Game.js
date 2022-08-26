@@ -18,6 +18,13 @@ export default class Game {
     this.currentRound = round;
   }
 
+  getPlayersDeckLength() {
+    return this.players.map((player) => ({
+      username: player.username,
+      nbOfCards: player.getDeck().length,
+    }));
+  }
+
   nextRound() {
     this.level++;
 

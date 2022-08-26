@@ -32,6 +32,10 @@ io.on("connection", (socket) => {
       level: game.getLevel(),
       lives: game.getLives(),
       stars: game.getStars(),
+      players: lobby.getPlayers().map((username) => ({
+        username,
+        nbOfCards: game.getLevel(),
+      })),
     });
 
     for (let player of lobby.players) {
@@ -54,6 +58,10 @@ io.on("connection", (socket) => {
         level: game.getLevel(),
         lives: game.getLives(),
         stars: game.getStars(),
+        players: lobby.getPlayers().map((username) => ({
+          username,
+          nbOfCards: game.getLevel(),
+        })),
       });
 
       for (let player of lobby.players) {
@@ -71,9 +79,7 @@ io.on("connection", (socket) => {
 
     socket.emit("update_deck", player.getDeck());
 
-    io.sockets.emit("played", {
-      card,
-    });
+    io.sockets.emit("played", { card, players: game.getPlayersDeckLength() });
 
     io.sockets.emit("log", {
       message: `${player.username} pose la carte ${card}`,

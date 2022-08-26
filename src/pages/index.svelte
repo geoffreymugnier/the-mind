@@ -2,7 +2,9 @@
   import { socket } from '../socket';
   import { goto } from '@roxi/routify';
   import user from '../user';
+  import room from '../room';
   import { onMount } from 'svelte';
+  import Input from '../lib/Input.svelte';
 
   let players = [];
 
@@ -17,26 +19,37 @@
   }
   
   socket.on('join', (data) => players = [...players, data]);
-  socket.on('game_started', () => $goto('/game'))
+  socket.on('game_started', ({ level, lives, stars, players }) => {
+    $room.players = players;
+    $room.level = level;
+    $room.lives = lives;
+    $room.stars = stars;
+    
+    $goto('/game');
+  })
 </script>
 
 <main>
+  <h1>The Mind</h1>
   {#if $user.name}
-    <p>En attente du début de partie</p>
+    <p class="text-gray-500">En attente du début de partie...</p>
   {:else}
     <form on:submit|preventDefault={handleJoin}>
-      <input type="text" name="username" placeholder="username">
-      <button>Rejoindre</button>
+      <Input name="username" label="Pseudo" placeholder="Entrez votre pseudo" />
+      <button class="btn btn-primary">Rejoindre</button>
     </form>
   {/if}
   
-  <p>Joueurs présents :</p>
-  {#each players as player}
-  <p>{player}</p>
-  {/each}
+  {#if players.length}
+    <div class="my-3">
+      {#each players as player}
+        <p>{player}</p>
+      {/each}
+    </div>
+  {/if}
 
   {#if players.length > 1}
-    <button on:click={() => socket.emit('start')}>Lancer la partie</button>
+    <button class="btn btn-primary" on:click={() => socket.emit('start')}>Lancer la partie</button>
     <button on:click={() => socket.emit('purge')}>Purger la salle</button>
   {/if}
 </main>

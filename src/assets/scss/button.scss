@@ -1,0 +1,9 @@
+button {
+  @apply bg-gray-50 px-5 py-2 rounded-lg font-medium hover:bg-gray-100;
+}
+
+.btn {
+  &-primary {
+    @apply bg-blue-500 hover:bg-blue-700 text-white;
+  }
+}
