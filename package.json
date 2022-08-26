@@ -7,7 +7,7 @@
     "dev": "run-p dev:*",
     "dev:vite": "vite",
     "dev:routify": "routify",
-    "build": "vite build",
+    "build": "routify -b && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
