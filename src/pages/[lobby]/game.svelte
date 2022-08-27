@@ -8,7 +8,7 @@
   import StarModal from '../../lib/StarModal.svelte';
 
   socket.on('game_over', () => {
-    $goto('./gameover');
+    $goto(`/${lobby}/gameover`);
   })
 
   const handleCardClick = (index) => {

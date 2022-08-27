@@ -37,7 +37,7 @@
     $room.lives = lives;
     $room.stars = stars;
     
-    $goto('./game');
+    $goto(`/${lobby}/game`);
   })
 </script>
 
