@@ -4,6 +4,7 @@ import { socket } from "./socket";
 const user = () => {
   const state = {
     name: null,
+    joined: false,
     deck: [],
   };
 

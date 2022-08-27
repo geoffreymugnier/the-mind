@@ -1,55 +1,33 @@
 <script>
-  import { socket } from '../socket';
   import { goto } from '@roxi/routify';
-  import user from '../user';
-  import room from '../room';
-  import { onMount } from 'svelte';
   import Input from '../lib/Input.svelte';
 
-  let players = [];
+  let lobby = null;
 
-  onMount(() => {
-    socket.emit('joined').on('joined', (data) => players = data);
-  })
-
-  const handleJoin = () => {
-    socket.emit('join', $user.name);
-    $user.joined = true;
+  const generateLobbyId = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let id = '';
+    for (let i = 0; i < 6; i++) {
+      id += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return id;
   }
   
-  socket.on('join', (data) => players = [...players, data]);
-  socket.on('game_started', ({ level, lives, stars, players }) => {
-    $room.players = players;
-    $room.level = level;
-    $room.lives = lives;
-    $room.stars = stars;
-    
-    $goto('/game');
-  })
+  const joinLobby = () => {
+    $goto(`/${lobby ??  generateLobbyId()}`);
+  }
 </script>
 
 <main>
-  <h1>The Mind</h1>
-  {#if $user.joined}
-    {#if players.length > 1}
-      <button class="btn btn-primary" on:click={() => socket.emit('start')}>Lancer la partie</button>
-      <button on:click={() => socket.emit('purge')}>Purger la salle</button>
-    {:else}
-    <p>En attente d'autres joueurs...</p>
-    {/if}
-  {:else}
-    <Input name="username" bind:value={$user.name} label="Pseudo" placeholder="Entrez votre pseudo" />
-    <button 
-      class="btn btn-primary" 
-      on:click={handleJoin}
-      disabled={!$user.name}>Rejoindre</button>
-  {/if}
+  <h1>Mexican Standoff</h1>
 
-  {#if players.length}
-    <div class="my-3">
-      {#each players as player}
-        <p>{player}</p>
-      {/each}
-    </div>
-  {/if}
+<div class="flex items-center justify-center">
+  <div class="inline-flex gap-2" role="group">
+    <Input name="lobby" placeholder="Lobby" bind:value={lobby} />
+    <button class="btn btn-primary h-full" on:click={joinLobby}>Rejoindre</button>
+  </div>
+</div>
+
+<button class="btn btn-primary-outlined h-full mt-5" on:click={joinLobby}>Créer un nouveau lobby</button>
+
 </main>

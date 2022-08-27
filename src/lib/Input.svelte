@@ -1,11 +1,13 @@
 <script>
   export let value = null;
   export let name;
-  export let label;
-  export let placeholder = label;
+  export let placeholder = "Valeur";
+  export { classNames as class };
+
+  let classNames = ''
 </script>
 <div class="flex justify-center">
-  <div class="mb-3 xl:w-96">
+  <div class="mb-3 {classNames}">
     <input
       type="text"
       name={name}

@@ -1,14 +1,14 @@
 <script>
-  import { socket } from '../socket';
-  import user from '../user';
-  import room from '../room';
+  import { socket } from '../../socket';
+  import user from '../../user';
+  import room from '../../room';
   import { goto } from '@roxi/routify';
-  import Logs from '../lib/Logs.svelte';
-  import Players from '../lib/Players.svelte';
-  import StarModal from '../lib/StarModal.svelte';
+  import Logs from '../../lib/Logs.svelte';
+  import Players from '../../lib/Players.svelte';
+  import StarModal from '../../lib/StarModal.svelte';
 
   socket.on('game_over', () => {
-    $goto('/gameover');
+    $goto('./gameover');
   })
 
   const handleCardClick = (index) => {

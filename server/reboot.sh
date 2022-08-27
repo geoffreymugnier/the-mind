@@ -1,1 +1,1 @@
-pm2 stop index && pm2 delete index && pm2 start index.js && pm2 logs index
+pm2 stop index && pm2 delete index && pm2 start index.js --watch && pm2 flush index && pm2 logs index
