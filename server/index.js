@@ -41,6 +41,13 @@ io.on("connection", (socket) => {
       lobby.remove(socket.id);
 
       io.in(lobby.id).emit("player_disconnected", socket.username);
+
+      if (lobby.getPlayers().length == 1) {
+        io.in(lobby.id).emit("game_over");
+        io.in(lobby.id).socketsLeave();
+
+        Lobbies.remove(socket.lobby.id);
+      }
     }
   });
 
