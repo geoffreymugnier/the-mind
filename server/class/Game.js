@@ -7,7 +7,7 @@ export default class Game {
 
   constructor(players) {
     this.lives = players.length;
-    this.stars = players.length;
+    this.stars = 1;
     this.players = players;
     this.lastLevel = this.computeLastLevel();
 
@@ -27,6 +27,14 @@ export default class Game {
 
   nextRound() {
     this.level++;
+
+    if ([2, 5, 8].includes(this.level)) {
+      this.stars++;
+    }
+
+    if ([3, 6, 9].includes(this.level)) {
+      this.lives++;
+    }
 
     if (this.level === this.lastLevel) {
       return this.win();

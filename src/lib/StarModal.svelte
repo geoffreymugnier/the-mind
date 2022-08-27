@@ -12,7 +12,6 @@
 
   socket.on("star_vote_succeeded", ({ stars, card }) => {
     $room.stars = stars;
-    $room.lastCard = card;
     
     room.stopVote();
   });

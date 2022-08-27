@@ -36,10 +36,11 @@ const room = () => {
     });
   });
 
-  socket.on("new_round", ({ level, players, lives }) => {
+  socket.on("new_round", ({ level, players, stars, lives }) => {
     update((state) => {
       state.level = level;
       state.lives = lives;
+      state.stars = stars;
       state.lastCard = 0;
       state.players = players;
 
