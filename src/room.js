@@ -14,6 +14,13 @@ const room = () => {
 
   const { subscribe, set, update } = writable(state);
 
+  socket.on("player_disconnected", (username) => {
+    update((state) => {
+      state.players = state.players.filter((p) => p.username !== username);
+      return state;
+    });
+  });
+
   socket.on("played", ({ players, card }) => {
     update((state) => {
       state.players = players;

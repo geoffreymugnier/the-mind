@@ -14,6 +14,10 @@
     socket.emit('join', lobby)
   })
   
+  socket.on("player_disconnected", (username) => {
+    players = players.filter(p => p !== username)
+  });
+
   socket.on('joined_game', (data) => players = data);
 
   const handleJoin = () => {

@@ -20,8 +20,8 @@ export default class Lobby {
     this.players.push(player);
   }
 
-  remove(username) {
-    this.players = this.players.filter((p) => p.username == username);
+  remove(id) {
+    this.players = this.players.filter((p) => p.id !== id);
   }
 
   purge() {

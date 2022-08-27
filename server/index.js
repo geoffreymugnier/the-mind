@@ -34,6 +34,16 @@ const io = new Server({
 });
 
 io.on("connection", (socket) => {
+  socket.on("disconnect", () => {
+    if (socket.lobby?.id) {
+      const lobby = Lobbies.get(socket.lobby.id);
+      socket.leave(lobby.id);
+      lobby.remove(socket.id);
+
+      io.in(lobby.id).emit("player_disconnected", socket.username);
+    }
+  });
+
   socket.on("join", (lobbyId) => {
     socket.join(lobbyId);
     // io.in(lobbyId).emit("join", username);
@@ -44,6 +54,7 @@ io.on("connection", (socket) => {
     lobby.add(socket.id, username);
 
     socket.lobby = lobby;
+    socket.username = username;
     io.in(lobbyId).emit("joined_game", lobby.getPlayers());
   });
 
