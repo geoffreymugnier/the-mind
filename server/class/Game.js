@@ -4,6 +4,7 @@ export default class Game {
   players = [];
   level = 1;
   currentRound = null;
+  isWon = false;
 
   constructor(players) {
     this.lives = players.length;
@@ -36,11 +37,15 @@ export default class Game {
       this.lives++;
     }
 
-    if (this.level === this.lastLevel) {
-      return this.win();
+    if (this.level > this.lastLevel) {
+      this.win();
     }
 
     this.currentRound = new Round(this);
+  }
+
+  win() {
+    return (this.isWon = true);
   }
 
   removeLife() {
@@ -54,8 +59,6 @@ export default class Game {
 
     return stillAlive;
   }
-
-  win() {}
 
   computeLastLevel() {
     let lastLevel = 12;

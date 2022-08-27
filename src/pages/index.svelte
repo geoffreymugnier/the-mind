@@ -19,7 +19,7 @@
 </script>
 
 <main>
-  <h1>Mexican Standoff</h1>
+  <h1>🔫 Mexican Standoff 🔫 </h1>
 
 <div class="flex items-center justify-center">
   <div class="inline-flex gap-2" role="group">

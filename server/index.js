@@ -106,7 +106,11 @@ io.on("connection", (socket) => {
 
     const currentLevel = game.getLevel();
 
-    if (round.everyoneAgreesUsingStar() !== false) {
+    if (round.everyoneAgreesUsingStar()) {
+      if (game.isWon) {
+        return io.to(socket.lobby.id).emit("game_won");
+      }
+
       io.to(socket.lobby.id).emit("star_vote_succeeded", {
         stars: game.getStars(),
         card: round.activeCard,
@@ -151,6 +155,10 @@ io.on("connection", (socket) => {
 
     const nextRound = () => {
       game.nextRound();
+
+      if (game.isWon) {
+        return io.to(socket.lobby.id).emit("game_won");
+      }
 
       io.to(socket.lobby.id).emit("new_round", {
         level: game.getLevel(),

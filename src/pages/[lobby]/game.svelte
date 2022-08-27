@@ -13,6 +13,10 @@
     $goto(`/${lobby}/gameover`);
   })
 
+  socket.on('game_won', () => {
+    $goto(`/${lobby}/victory`);
+  })
+
   const handleCardClick = (index) => {
     if (index === 0) {
       socket.emit('play');

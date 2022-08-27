@@ -59,7 +59,8 @@ export default class Round {
     );
 
     if (everyoneAgreesUsingStar) {
-      return this.useStar();
+      this.useStar();
+      return true;
     }
 
     return false;
@@ -82,8 +83,6 @@ export default class Round {
     if (this.game.players.every((player) => player.getDeck().length === 0)) {
       return this.game.nextRound();
     }
-
-    return;
   }
 
   resetVotes() {

@@ -8,5 +8,5 @@
   })
 </script>
 
-<h1>😭😭 Game Over 😭😭</h1>
+<h1>🎉🎉 Victory 🎉🎉</h1>
 <button on:click={() => $goto('/')} class="btn btn-primary">Retourner au lobby</button>
