@@ -7,6 +7,8 @@
   import Players from '../../lib/Players.svelte';
   import StarModal from '../../lib/StarModal.svelte';
 
+  export let lobby;
+  
   socket.on('game_over', () => {
     $goto(`/${lobby}/gameover`);
   })
