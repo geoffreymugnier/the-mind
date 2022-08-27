@@ -1,9 +1,13 @@
 button {
-  @apply bg-gray-50 px-5 py-2 rounded-lg font-medium hover:bg-gray-100;
+  @apply bg-gray-50 px-5 py-2 rounded  font-medium hover:bg-gray-100;
 }
 
 .btn {
   &-primary {
-    @apply bg-blue-500 hover:bg-blue-700 text-white;
+    @apply bg-indigo-600 hover:bg-indigo-800 text-white;
+  }
+
+  &-danger {
+    @apply bg-red-500 hover:bg-red-700 text-white;
   }
 }

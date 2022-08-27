@@ -43,6 +43,64 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("start_star_vote", () => {
+    const game = lobby.game;
+    const player = game.getPlayer(socket.id);
+    io.sockets.emit("start_star_vote", player.username);
+  });
+
+  socket.on("star_vote", (vote) => {
+    const game = lobby.game;
+    const round = game.currentRound;
+    const player = game.getPlayer(socket.id);
+
+    io.sockets.emit("star_vote", {
+      username: player.username,
+      vote,
+    });
+
+    player.vote(vote);
+
+    if (vote === false) {
+      return io.sockets.emit("star_vote_failed", player.username);
+    }
+
+    const currentLevel = game.getLevel();
+
+    if (round.everyoneAgreesUsingStar() !== false) {
+      io.sockets.emit("star_vote_succeeded", {
+        stars: game.getStars(),
+        card: round.activeCard,
+      });
+
+      // there's no cards left, we can start the next round
+      if (game.getLevel() !== currentLevel) {
+        io.sockets.emit("new_round", {
+          level: game.getLevel(),
+          lives: game.getLives(),
+          stars: game.getStars(),
+          players: lobby.getPlayers().map((username) => ({
+            username,
+            nbOfCards: game.getLevel(),
+          })),
+        });
+      }
+
+      for (let _player of game.players) {
+        io.sockets.sockets
+          .get(_player.id)
+          .emit("update_deck", _player.getDeck());
+
+        io.sockets.emit("update_decks_length", {
+          players: game.players.map((player) => ({
+            username: player.username,
+            nbOfCards: player.getDeck().length,
+          })),
+        });
+      }
+    }
+  });
+
   socket.on("play", () => {
     const game = lobby.game;
     const round = game.currentRound;

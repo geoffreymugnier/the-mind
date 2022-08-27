@@ -7,7 +7,7 @@ const user = () => {
     deck: [],
   };
 
-  const { subscribe, update } = writable(state);
+  const { subscribe, set, update } = writable(state);
 
   socket.on("give_cards", (cards) => {
     console.log("receiving cards", cards);
@@ -36,6 +36,7 @@ const user = () => {
   return {
     subscribe,
     setName,
+    set,
   };
 };
 

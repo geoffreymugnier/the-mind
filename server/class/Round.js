@@ -1,15 +1,9 @@
 export default class Round {
   game;
-  players = [];
-  level = 1;
+  activeCard = 0;
 
   constructor(game) {
     this.game = game;
-
-    this.players = game.players;
-    this.level = game.level;
-
-    // this.resetAllDecks();
     this.distributeCards();
   }
 
@@ -20,7 +14,7 @@ export default class Round {
   play(card) {
     let playersWithLesserCards = [];
 
-    for (let player of this.players) {
+    for (let player of this.game.players) {
       const playerSmallerCards = player.getSmallerCards(card);
       player.removeCards(playerSmallerCards);
 
@@ -36,17 +30,19 @@ export default class Round {
       }
     }
 
+    this.activeCard = card;
+
     return playersWithLesserCards;
   }
 
   resetAllDecks() {
-    for (let player of this.players) {
+    for (let player of this.game.players) {
       player.resetDeck();
     }
   }
   distributeCards() {
-    for (let player of this.players) {
-      for (let i = 1; i <= this.level; i++) {
+    for (let player of this.game.players) {
+      for (let i = 1; i <= this.game.level; i++) {
         const card = this.generateCard();
         player.addToDeck(card);
       }
@@ -54,7 +50,44 @@ export default class Round {
   }
 
   getPlayersCards() {
-    return this.players.map((player) => player.getDeck()).flat();
+    return this.game.players.map((player) => player.getDeck()).flat();
+  }
+
+  everyoneAgreesUsingStar() {
+    const everyoneAgreesUsingStar = this.game.players.every(
+      (player) => player.hasVoted
+    );
+
+    if (everyoneAgreesUsingStar) {
+      return this.useStar();
+    }
+
+    return false;
+  }
+
+  useStar() {
+    const smallestCards = this.game.players.map((player) => {
+      const card = player.getSmallestCard();
+      player.removeCard(card);
+
+      return card;
+    });
+
+    const biggestCard = Math.max(...smallestCards);
+
+    this.activeCard = biggestCard;
+    this.game.stars--;
+    this.resetVotes();
+
+    if (this.game.players.every((player) => player.getDeck().length === 0)) {
+      return this.game.nextRound();
+    }
+
+    return;
+  }
+
+  resetVotes() {
+    this.game.players.map((player) => (player.hasVoted = false));
   }
 
   generateCard() {

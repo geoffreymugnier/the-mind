@@ -7,6 +7,8 @@ const room = () => {
     level: 1,
     lives: 1,
     stars: 1,
+    voting: false,
+    voteStartedBy: null,
     lastCard: 0,
   };
 
@@ -16,6 +18,13 @@ const room = () => {
     update((state) => {
       state.players = players;
       state.lastCard = card;
+      return state;
+    });
+  });
+
+  socket.on("update_decks_length", ({ players }) => {
+    update((state) => {
+      state.players = players;
       return state;
     });
   });
@@ -31,6 +40,35 @@ const room = () => {
     });
   });
 
+  socket.on("start_star_vote", (username) => {
+    update((state) => {
+      state.voting = true;
+      state.voteStartedBy = username;
+      return state;
+    });
+  });
+
+  socket.on("star_vote", ({ username, vote }) => {
+    update((state) => {
+      const player = state.players.find(
+        (player) => player.username === username
+      );
+      player.hasVoted = vote;
+
+      return state;
+    });
+  });
+
+  socket.on("vote_end", () => {
+    update((state) => {
+      state.players.map((player) => {
+        player.hasVoted = false;
+      });
+
+      return state;
+    });
+  });
+
   socket.on("loose_life", (lives) => {
     update((state) => {
       state.lives = lives;
@@ -39,8 +77,17 @@ const room = () => {
     });
   });
 
+  function stopVote() {
+    update((state) => {
+      state.voting = false;
+      state.voteStartedBy = null;
+      return state;
+    });
+  }
+
   return {
     set,
+    stopVote,
     subscribe,
   };
 };

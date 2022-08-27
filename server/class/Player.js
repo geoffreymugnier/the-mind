@@ -1,6 +1,7 @@
 export default class Player {
   deck = [];
   lastRemovedCards = [];
+  hasVoted = null;
 
   constructor(id, username) {
     this.username = username;
@@ -22,6 +23,10 @@ export default class Player {
 
   getDeck() {
     return this.deck;
+  }
+
+  vote(vote) {
+    return (this.hasVoted = vote);
   }
 
   getSmallestCard() {

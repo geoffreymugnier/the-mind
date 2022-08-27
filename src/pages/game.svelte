@@ -5,6 +5,7 @@
   import { goto } from '@roxi/routify';
   import Logs from '../lib/Logs.svelte';
   import Players from '../lib/Players.svelte';
+  import StarModal from '../lib/StarModal.svelte';
 
   socket.on('game_over', () => {
     $goto('/gameover');
@@ -16,11 +17,27 @@
     }
   }
 
+  const handleStartVote = () => {
+    if ($room.stars >= 1) {
+      socket.emit("start_star_vote", $user.name);
+    }
+  }
+
+  $: canUseStar = () => {
+    return $room.stars > 0 && $room.level > 1 && $room.players.every(player => player.nbOfCards > 0);
+  }
 </script>
+
+{#if $room.voting}
+  <StarModal />
+{/if}
 
 <div class="flex justify-center mb-5">
   <h2 class="font-semibold text-2xl">🏆 {$room.level}</h2>
   <h2 class="font-semibold text-2xl">❤️ {$room.lives}</h2>
+  <button class="btn" class:btn-primary={canUseStar()} disabled={!canUseStar()} on:click={handleStartVote}>
+    <span class="font-semibold text-2xl">⭐ {$room.stars}</span>
+  </button>
 </div>
 
 <h1 class="border border-red-500 main-card">{$room.lastCard}</h1>
@@ -31,14 +48,19 @@
         class="deck-card" 
         class:deck-card--min={index == 0}
         on:click={() => handleCardClick(index)}
-        ><span class="transition duration-300 ease-in-out">{card}</span></div>
+        ><span class="transition duration-200 ease-in-out">{card}</span></div>
     {/each}
   </div>
 {:else}
+  <p class="mt-5">Bien joué, vous avez placé toutes vos cartes !</p>
   <p>En attente des autres joueurs...</p>
 {/if}
 
 <Players players={$room.players} />
+
+<button class="bg-gray-50 mt-5 inline-block lg:hidden" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+  Voir l'historique ›
+</button>
 
 <Logs />
 
@@ -59,9 +81,9 @@
   }
 
   .deck-card {
+    @apply bg-indigo-700;
     opacity: .50;
     border: 1px solid #fafafa;
-    background-color: rgb(124, 208, 219);
     color: #fff;
     border-radius: 6px;
     height: 100px;
@@ -73,10 +95,10 @@
   }
 
   .deck-card--min {
-    @apply bg-blue-400;
+    @apply bg-indigo-700 transition duration-200 ease-in-out;
 
     &:hover {
-      @apply bg-blue-500;
+      @apply bg-indigo-500;
 
       span {
         @apply scale-125;
