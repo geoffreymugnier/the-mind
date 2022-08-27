@@ -1,12 +1,23 @@
 <script>
   import { goto } from '@roxi/routify';
-  import user from '../../user';
   import { onMount } from 'svelte';
+  import Logs from '../../lib/Logs.svelte';
+  import room from '../../room';
 
+  export let lobby;
+  
   onMount(() => {
-    $user.joined = false;
+    room.reset();
   })
 </script>
 
 <h1>😭😭 Game Over 😭😭</h1>
-<button on:click={() => $goto('/')} class="btn btn-primary">Retourner au lobby</button>
+<div class="flex">
+  <button on:click={() => $goto(`/${lobby}`)} class="btn btn-primary-outlined">Retourner au lobby</button>
+</div>
+
+<button class="bg-gray-50 mt-5 inline-block lg:hidden" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+  Voir l'historique ›
+</button>
+
+<Logs />

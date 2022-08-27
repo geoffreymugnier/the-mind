@@ -1,40 +1,39 @@
 <script>
+  import room from '../room';
   import { socket } from '../socket';
 
-  let logs = [];
-
   socket.on("star_vote_failed", (username) => {
-     logs = [{
+    room.pushToLogs({
       message: `⭐ <b>${username}</b> a refusé d'utiliser une étoile`,
-    }, ...logs];
+    });
   });
 
   socket.on("star_vote_succeeded", () => {
-    logs = [{
+    room.pushToLogs({
       message: `⭐ <b>Une étoile a été utilisée</b>`,
       type: 'star'
-    }, ...logs];
+    });
   });
 
   socket.on('new_round', ({ level }) => {
-    logs = [{
+    room.pushToLogs({
       message: `🏆 <b>Vous passez au niveau ${level} !</b>`,
       type: "success"
-    }, ...logs]
+    });
   })
 
   socket.on('loose_life', () => {
-    logs = [{
+    room.pushToLogs({
       message: `💔 <b>Vous perdez une vie</b>`,
       type: "error"
-    }, ...logs]
+    });
   });
 
   socket.on('log', ({ message, type }) => {
-    logs = [{
+    room.pushToLogs({
       message,
       type
-    }, ...logs];
+    });
   })
 </script>
 
@@ -46,7 +45,7 @@
     <button type="button" class="btn-close box-content w-4 h-4 p-2 -my-5 -mr-2 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body flex-grow p-4 overflow-y-auto">
-    {#each logs as { message, type }}
+    {#each $room.logs as { message, type }}
       <div class="log bg-{type}">
         <p>{@html message}</p>
       </div>
@@ -55,7 +54,7 @@
 </div>
 
 <div class="logs hidden lg:block">
-  {#each logs as { message, type }}
+  {#each $room.logs as { message, type }}
     <div class="log bg-{type}">
       <p>{@html message}</p>
     </div>

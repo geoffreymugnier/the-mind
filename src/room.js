@@ -10,6 +10,7 @@ const room = () => {
     voting: false,
     voteStartedBy: null,
     lastCard: 0,
+    logs: [],
   };
 
   const { subscribe, set, update } = writable(state);
@@ -93,10 +94,30 @@ const room = () => {
     });
   }
 
+  function pushToLogs(message) {
+    update((state) => {
+      state.logs = [message, ...state.logs];
+      return state;
+    });
+  }
+
+  function reset() {
+    update((state) => {
+      state.level = 1;
+      state.lives = 1;
+      state.stars = 1;
+      state.lastCard = 0;
+      state.logs = [];
+      return state;
+    });
+  }
+
   return {
     set,
     stopVote,
     subscribe,
+    reset,
+    pushToLogs,
   };
 };
 
