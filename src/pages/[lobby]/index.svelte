@@ -9,6 +9,7 @@
   export let lobby;
 
   let players = [];
+  let error;
 
   onMount(() => {
     socket.emit('join', lobby)
@@ -18,9 +19,15 @@
     players = players.filter(p => p !== username)
   });
 
+  socket.on('cannot_join', message => {
+    error = message;
+    $user.joined = false;
+  });
+
   socket.on('joined_game', (data) => players = data);
 
   const handleJoin = () => {
+    error = null;
     socket.emit('joined_game', {
       lobbyId: lobby,
       username: $user.name
@@ -46,7 +53,7 @@
 </script>
 
 <main>
-  <h1>Mexican Standoff</h1>
+  <img src="/gringo.png" class="m-auto mb-5 w-96" alt="Mexican Standoff" />
   <h2>{lobby}</h2>
   {#if $user.joined}
     {#if players.length > 1}
@@ -65,6 +72,9 @@
       </div>
   {/if}
 
+  {#if error}
+      <p class="text-red-500">{error}</p>
+  {/if}
   {#if players.length}
     <div class="my-3">
       {#each players as player}

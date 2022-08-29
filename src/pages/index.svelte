@@ -25,14 +25,12 @@
 </script>
 
 <main>
-  <h1>Mexican Standoff</h1>
-
-<div class="flex items-center justify-center">
-  <div class="inline-flex gap-2" role="group">
-    <Input name="lobby" placeholder="Nom du lobby" bind:value={lobby} />
-    <button class="btn btn-primary h-full" on:click={joinLobby}>Rejoindre</button>
+  <img src="/gringo.png" class="m-auto mb-5" alt="Mexican Standoff" />
+  <div class="flex items-center justify-center">
+    <div class="inline-flex gap-2" role="group">
+      <Input name="lobby" placeholder="Nom du lobby" bind:value={lobby} />
+      <button class="btn btn-primary h-full" on:click={joinLobby}>Rejoindre</button>
+    </div>
   </div>
-</div>
-<p class="text-gray-500">Pas d'idée de nom de lobby ? <span class="font-semibold cursor-pointer text-indigo-800" on:click={() => lobby = generateLobbyId()}>Cliquez ici pour le générer !</span> 🙂</p>
-
+  <p class="text-gray-500">Pas d'idée de nom de lobby ? <span class="font-semibold cursor-pointer text-indigo-800" on:click={() => lobby = generateLobbyId()}>Cliquez ici pour le générer !</span> 🙂</p>
 </main>

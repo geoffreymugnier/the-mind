@@ -42,7 +42,7 @@ io.on("connection", (socket) => {
 
       io.in(lobby.id).emit("player_disconnected", socket.username);
 
-      if (lobby.getPlayers().length == 1) {
+      if (lobby.getPlayers().length == 1 && lobby.game) {
         io.in(lobby.id).emit("game_over");
         io.in(lobby.id).socketsLeave();
 
@@ -53,16 +53,18 @@ io.on("connection", (socket) => {
 
   socket.on("join", (lobbyId) => {
     socket.join(lobbyId);
-    // io.in(lobbyId).emit("join", username);
   });
 
   socket.on("joined_game", ({ lobbyId, username }) => {
     const lobby = Lobbies.get(lobbyId);
-    lobby.add(socket.id, username);
-
-    socket.lobby = lobby;
-    socket.username = username;
-    io.in(lobbyId).emit("joined_game", lobby.getPlayers());
+    try {
+      lobby.add(socket.id, username);
+      socket.lobby = lobby;
+      socket.username = username;
+      io.in(lobbyId).emit("joined_game", lobby.getPlayers());
+    } catch (e) {
+      socket.emit("cannot_join", e);
+    }
   });
 
   socket.on("purge", (lobbyId) => {
@@ -72,20 +74,24 @@ io.on("connection", (socket) => {
   });
 
   socket.on("start", () => {
-    const game = socket.lobby.startGame();
+    try {
+      const game = socket.lobby.startGame();
 
-    io.to(socket.lobby.id).emit("game_started", {
-      level: game.getLevel(),
-      lives: game.getLives(),
-      stars: game.getStars(),
-      players: socket.lobby.getPlayers().map((username) => ({
-        username,
-        nbOfCards: game.getLevel(),
-      })),
-    });
+      io.to(socket.lobby.id).emit("game_started", {
+        level: game.getLevel(),
+        lives: game.getLives(),
+        stars: game.getStars(),
+        players: socket.lobby.getPlayers().map((username) => ({
+          username,
+          nbOfCards: game.getLevel(),
+        })),
+      });
 
-    for (let player of socket.lobby.players) {
-      io.sockets.sockets.get(player.id).emit("give_cards", player.getDeck());
+      for (let player of socket.lobby.players) {
+        io.sockets.sockets.get(player.id).emit("give_cards", player.getDeck());
+      }
+    } catch (e) {
+      throw `Game cannot be started. Reason: ${e}`;
     }
   });
 

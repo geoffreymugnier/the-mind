@@ -22,7 +22,10 @@ export default class Lobby {
 
   remove(id) {
     this.players = this.players.filter((p) => p.id !== id);
-    this.game.players = this.game.players.filter((p) => p.id !== id);
+
+    if (this.game) {
+      this.game.players = this.game.players.filter((p) => p.id !== id);
+    }
   }
 
   purge() {
