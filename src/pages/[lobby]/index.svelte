@@ -63,13 +63,14 @@
     <p>En attente d'autres joueurs...</p>
     {/if}
   {:else}
-  <div class="flex gap-2 justify-center">
-    <Input name="username" bind:value={$user.name} label="Pseudo" placeholder="Entrez votre pseudo" />
-    <button 
-      class="btn btn-primary h-full" 
-      on:click={handleJoin}
-      disabled={!$user.name}>Rejoindre</button>
+    <form on:submit|preventDefault={handleJoin}>
+      <div class="flex gap-2 justify-center">
+        <Input name="username" bind:value={$user.name} label="Pseudo" placeholder="Entrez votre pseudo" />
+        <button 
+          class="btn btn-primary h-full" 
+          disabled={!$user.name}>Rejoindre</button>
       </div>
+    </form>
   {/if}
 
   {#if error}
