@@ -3,11 +3,15 @@
   import Input from '../lib/Input.svelte';
   import {onMount} from 'svelte';
   import user from '../user';
+  import room from '../room';
 
   let lobby = null;
 
   onMount(() => {
     $user.joined = false;
+    
+    $room.logs = [];
+    $room.lastCard = 0;
   });
 
   const generateLobbyId = () => {
