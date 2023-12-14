@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
 import { socket } from "./socket";
+import logs from "./logs";
 
 const room = () => {
   const state = {
@@ -99,6 +100,8 @@ const room = () => {
       state.logs = [message, ...state.logs];
       return state;
     });
+
+    logs.pushLog(message.message);
   }
 
   function reset() {

@@ -6,6 +6,7 @@
   import Logs from '../../lib/Logs.svelte';
   import Players from '../../lib/Players.svelte';
   import StarModal from '../../lib/StarModal.svelte';
+  import logs from '../../logs';
 
   export let lobby;
   
@@ -34,11 +35,17 @@
   }
 </script>
 
+<div class="fixed top-20 left-0 w-full">
+  {#each $logs.lastLogs as lastLogMessage}
+    <p>{@html lastLogMessage.message}</p>
+  {/each}
+</div>
+
 {#if $room.voting}
   <StarModal />
 {/if}
 
-<div class="flex justify-center mb-5">
+<div class="fixed top-0 left-0 w-full flex justify-center mb-5">
   <h2 class="font-semibold text-2xl">🏆 {$room.level}</h2>
   <h2 class="font-semibold text-2xl">❤️ {$room.lives}</h2>
   <button class="btn" class:btn-primary={canUseStar()} disabled={!canUseStar()} on:click={handleStartVote}>
@@ -63,10 +70,6 @@
 {/if}
 
 <Players players={$room.players} />
-
-<button class="bg-gray-50 mt-5 inline-block lg:hidden" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-  Voir l'historique ›
-</button>
 
 <Logs />
 
