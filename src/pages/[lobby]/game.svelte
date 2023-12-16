@@ -7,7 +7,8 @@
   import Players from '../../lib/Players.svelte';
   import StarModal from '../../lib/StarModal.svelte';
   import logs from '../../logs';
-  import { scale } from 'svelte/transition';
+  import { scale, blur } from 'svelte/transition';
+	import { elasticOut } from 'svelte/easing';
 
   export let lobby;
   
@@ -47,15 +48,19 @@
 {/if}
 
 <div class="fixed top-0 left-0 w-full flex justify-center mb-5">
-  <h2 class="font-semibold text-2xl">🏆 {$room.level}</h2>
-  <h2 class="font-semibold text-2xl">❤️ {$room.lives}</h2>
+  {#key $room.level}
+    <h2 in:scale={{ start: 2, duration: 600}} class="font-semibold text-2xl">🏆 {$room.level}</h2>
+  {/key}
+  {#key $room.lives}
+    <h2 in:scale={{ start: 2, duration: 600}} class="font-semibold text-2xl">❤️ {$room.lives}</h2>
+  {/key}
   <button class="btn" class:btn-primary={canUseStar()} disabled={!canUseStar()} on:click={handleStartVote}>
     <span class="font-semibold text-2xl">⭐ {$room.stars}</span>
   </button>
 </div>
 
 {#key $room.lastCard}
-  <h1 in:scale class="border border-red-500 main-card">
+  <h1 in:scale={{ start: 1.6, duration: 600, easing: elasticOut }} class="main-card">
     {$room.lastCard}
   </h1>
 {/key}
@@ -154,7 +159,6 @@
   }
 
   .main-card {
-    border: 1px solid #fafafa;
     background-color: rgb(255 197 66);
     color: #fff;
     border-radius: 6px;
