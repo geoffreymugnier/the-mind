@@ -61,7 +61,10 @@
         class="deck-card" 
         class:deck-card--min={index == 0}
         on:click={() => handleCardClick(index)}
-        ><span class="transition duration-200 ease-in-out">{card}</span></div>
+      >
+        <span class="transition duration-200 ease-in-out">{card}</span>
+        <span class="absolute top-2 right-2 text-sm">{card}</span>
+      </div>
     {/each}
   </div>
 {:else}
@@ -83,27 +86,42 @@
   }
 
   .deck {
+    position: fixed;
     display: flex;
-    flex-wrap: wrap;
+    bottom: 1.5em;
+    left: 0;
+    width: 100%;
     justify-content: center;
-    align-items: center;
   }
 
   .deck-card {
-    @apply bg-indigo-700;
-    opacity: .50;
+    position: absolute;
+    @apply bg-indigo-800;
     border: 1px solid #fafafa;
     color: #fff;
     border-radius: 6px;
     height: 100px;
     width: 64px;
-    margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
+    transform: translate(38px, 16px);
+    rotate: 3deg;
   }
 
-  .deck-card--min {
+  .deck .deck-card:nth-child(2) {
+    z-index: 1;
+    transform: translate(38px, 16px);
+    rotate: 3deg;
+  }
+
+  .deck .deck-card:nth-child(3) {
+    z-index: 0;
+    transform: translate(65px, 10px);
+    rotate: 8deg;
+  }
+
+  .deck .deck-card:nth-child(1) {
     @apply bg-indigo-700 transition duration-200 ease-in-out;
 
     &:hover {
@@ -113,11 +131,16 @@
         @apply scale-125;
       }
     }
-    opacity: 1;
     color: #fff;
     font-weight: 600;
-    font-size: 1.5rem;
+    font-size: 2em;
     cursor: pointer;
+    height: 120px;
+    width: 80px;
+    transform: none;
+    position: static;
+    z-index: 2;
+    rotate: 0deg;
   }
 
   .main-card {
