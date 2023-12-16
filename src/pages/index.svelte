@@ -31,10 +31,10 @@
 <main>
   <img src="/gringo.png" class="m-auto mb-5 w-96" alt="Mexican Standoff" />
   <form on:submit|preventDefault={joinLobby}>
-    <div class="inline-flex gap-2" role="group">
-      <Input name="lobby" placeholder="Nom du lobby" bind:value={lobby} />
-      <button class="btn btn-primary h-full" on:click={joinLobby}>Rejoindre</button>
-    </div>
+    <Input name="lobby" class="w-full" placeholder="Nom du lobby" bind:value={lobby} />
+    <button class="btn btn-primary w-full mb-2" on:click={joinLobby}>Rejoindre</button>
+    <button class="btn btn-primary-outlined w-full" on:click={() => lobby = generateLobbyId()}>
+      Session aléatoire
+    </button>
   </form>
-  <p class="text-gray-500">Pas d'idée de nom de lobby ? <span class="font-semibold cursor-pointer text-indigo-800" on:click={() => lobby = generateLobbyId()}>Cliquez ici pour le générer !</span> 🙂</p>
 </main>
