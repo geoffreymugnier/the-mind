@@ -230,6 +230,10 @@ io.on("connection", (socket) => {
       for (let player of playersWithLesserCards) {
         io.sockets.sockets.get(player.id).emit("update_deck", player.getDeck());
       }
+    } else {
+      io.to(socket.lobby.id).emit("log", {
+        type: "successful_play",
+      });
     }
 
     if (round.isOver()) {

@@ -2,6 +2,25 @@
   import room from '../room';
   import { socket } from '../socket';
 
+  const changeBackgroundAccordingToAction = (actionType) => {
+    let color = '';
+
+    switch (actionType) {
+      case 'successful_play':
+        color = "rgb(181 255 204)";
+        break;
+      case 'error':
+        color = "rgb(255 171 171)";
+        break;
+    }
+    
+    document.body.style.backgroundColor = color;
+    
+    setTimeout(() => {
+      document.body.style.removeProperty('background-color');
+    }, 300);
+  }
+
   socket.on("star_vote_failed", (username) => {
     room.pushToLogs({
       message: `⭐ <b>${username}</b> a refusé d'utiliser une étoile`,
@@ -34,6 +53,8 @@
       message,
       type
     });
+    
+    changeBackgroundAccordingToAction(type);
   })
 </script>
 
