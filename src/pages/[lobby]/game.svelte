@@ -7,6 +7,7 @@
   import Players from '../../lib/Players.svelte';
   import StarModal from '../../lib/StarModal.svelte';
   import logs from '../../logs';
+  import { scale } from 'svelte/transition';
 
   export let lobby;
   
@@ -53,7 +54,12 @@
   </button>
 </div>
 
-<h1 class="border border-red-500 main-card">{$room.lastCard}</h1>
+{#key $room.lastCard}
+  <h1 in:scale class="border border-red-500 main-card">
+    {$room.lastCard}
+  </h1>
+{/key}
+
 {#if $user.deck.length}
   <div class="deck mt-5">
     {#each $user.deck as card, index}
@@ -68,8 +74,9 @@
     {/each}
   </div>
 {:else}
-  <p class="mt-5">Bien joué, vous avez placé toutes vos cartes !</p>
-  <p>En attente des autres joueurs...</p>
+  <div class="deck">
+    <p class="mt-5">Bien joué, vous avez placé toutes vos cartes !</p>
+  </div>
 {/if}
 
 <Players players={$room.players} />
@@ -148,7 +155,7 @@
 
   .main-card {
     border: 1px solid #fafafa;
-    background-color: rgb(39, 180, 67);
+    background-color: rgb(255 197 66);
     color: #fff;
     border-radius: 6px;
     height: 130px;
