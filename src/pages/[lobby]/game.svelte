@@ -96,12 +96,12 @@
 
   .deck-card {
     position: absolute;
-    @apply bg-indigo-800;
-    border: 1px solid #fafafa;
+    @apply bg-gray-700;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
     color: #fff;
     border-radius: 6px;
-    height: 100px;
-    width: 64px;
+    height: 115px;
+    width: 68px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -122,21 +122,24 @@
   }
 
   .deck .deck-card:nth-child(1) {
-    @apply bg-indigo-700 transition duration-200 ease-in-out;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.6);
+
+    @apply bg-gray-900 transition duration-200 ease-in-out;
 
     &:hover {
-      @apply bg-indigo-500;
+      @apply bg-gray-600;
 
       span {
         @apply scale-125;
       }
     }
+    
     color: #fff;
     font-weight: 600;
     font-size: 2em;
     cursor: pointer;
-    height: 120px;
-    width: 80px;
+    height: 135px;
+    width: 85px;
     transform: none;
     position: static;
     z-index: 2;
