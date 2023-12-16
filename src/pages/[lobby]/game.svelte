@@ -7,7 +7,7 @@
   import Players from '../../lib/Players.svelte';
   import StarModal from '../../lib/StarModal.svelte';
   import logs from '../../logs';
-  import { scale, blur } from 'svelte/transition';
+  import { scale, fly, slide } from 'svelte/transition';
 	import { elasticOut } from 'svelte/easing';
 
   export let lobby;
@@ -39,7 +39,7 @@
 
 <div class="fixed top-20 left-0 w-full">
   {#each $logs.lastLogs as lastLogMessage}
-    <p>{@html lastLogMessage.message}</p>
+    <p in:slide out:fly>{@html lastLogMessage.message}</p>
   {/each}
 </div>
 

@@ -20,7 +20,7 @@ const store = () => {
     async pushLog(message) {
       const log = {
         id: generateGuid(),
-        message
+        ...message
       };
 
       update((state) => {
@@ -28,17 +28,14 @@ const store = () => {
         return state;
       });
 
-      if (
-        state.lastLogs.length &&
-        state.lastLogs[0].id === log.id
-      ) {
+      if (state.lastLogs.length) {
         methods.startShowingLog(log);
       }
     },
     startShowingLog(log) {
         setTimeout(function () {
           methods.removeLog(log.id);
-        }, 2000);
+        }, 3000);
     },
     removeLog(id) {
       update((state) => {

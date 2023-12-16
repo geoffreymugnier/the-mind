@@ -18,7 +18,7 @@
     
     setTimeout(() => {
       document.body.style.removeProperty('background-color');
-    }, 300);
+    }, 400);
   }
 
   socket.on("star_vote_failed", (username) => {

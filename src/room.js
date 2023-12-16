@@ -101,7 +101,9 @@ const room = () => {
       return state;
     });
 
-    logs.pushLog(message.message);
+    if (message.message) {
+      logs.pushLog(message);
+    }
   }
 
   function reset() {
