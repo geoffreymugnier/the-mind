@@ -47,7 +47,7 @@
   <StarModal />
 {/if}
 
-<div class="fixed top-0 left-0 w-full flex justify-center mb-5">
+<div class="absolute top-0 left-0 w-full flex justify-center">
   {#key $room.level}
     <h2 in:scale={{ start: 2, duration: 600}} class="font-semibold text-2xl">🏆 {$room.level}</h2>
   {/key}
@@ -68,13 +68,9 @@
 {#if $user.deck.length}
   <div class="deck mt-5">
     {#each $user.deck as card, index}
-      <div 
-        class="deck-card" 
-        class:deck-card--min={index == 0}
-        on:click={() => handleCardClick(index)}
-      >
+      <div class="deck-card" on:click={() => handleCardClick(index)}>
         <span class="transition duration-200 ease-in-out">{card}</span>
-        <span class="absolute top-2 right-2 text-sm">{card}</span>
+        <span class="absolute top-2 right-2 deck-card-small-number">{card}</span>
       </div>
     {/each}
   </div>
@@ -98,7 +94,7 @@
   }
 
   .deck {
-    position: fixed;
+    position: absolute;
     display: flex;
     bottom: 1.5em;
     left: 0;
@@ -112,8 +108,8 @@
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
     color: #fff;
     border-radius: 6px;
-    height: 115px;
-    width: 68px;
+    height: 17vh;
+    width: 19vw;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -148,14 +144,18 @@
     
     color: #fff;
     font-weight: 600;
-    font-size: 2em;
+    font-size: 2.5em;
     cursor: pointer;
-    height: 135px;
-    width: 85px;
+    height: 20vh;
+    width: 24vw;
     transform: none;
     position: static;
     z-index: 2;
     rotate: 0deg;
+
+    .deck-card-small-number {
+      font-size: .5em;
+    }
   }
 
   .main-card {
