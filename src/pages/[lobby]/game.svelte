@@ -59,11 +59,14 @@
   </button>
 </div>
 
-{#key $room.lastCard}
-  <h1 in:scale={{ start: 1.6, duration: 600, easing: elasticOut }} class="main-card">
-    {$room.lastCard}
-  </h1>
-{/key}
+<div>
+  {#key $room.lastCard}
+    <h1 in:scale={{ start: 1.6, duration: 600, easing: elasticOut }} class="main-card">
+      {$room.lastCard}
+    </h1>
+    {/key}
+    <Players players={$room.players} />
+</div>
 
 {#if $user.deck.length}
   <div class="deck mt-5">
@@ -80,7 +83,6 @@
   </div>
 {/if}
 
-<Players players={$room.players} />
 
 <Logs />
 

@@ -36,6 +36,13 @@ body {
   transition: background-color 0.2s ease-in-out;
 }
 
+@supports (-webkit-touch-callout: none) {
+  body {
+    /* for ios safari 15, safe-area-inset-bottom is 0, so a special fix apply here */
+    min-height: -webkit-fill-available;
+  }
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
