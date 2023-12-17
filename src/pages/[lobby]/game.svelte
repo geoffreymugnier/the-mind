@@ -9,6 +9,7 @@
   import logs from '../../logs';
   import { scale, fly, slide } from 'svelte/transition';
 	import { elasticOut } from 'svelte/easing';
+  import { flip } from 'svelte/animate';
 
   export let lobby;
   
@@ -70,8 +71,8 @@
 
 {#if $user.deck.length}
   <div class="deck mt-5">
-    {#each $user.deck as card, index}
-      <div class="deck-card" on:click={() => handleCardClick(index)}>
+    {#each $user.deck as card, index (card)}
+      <div class="deck-card" on:click={() => handleCardClick(index)} animate:flip={{ duration: 200 }}>
         <span class="transition duration-200 ease-in-out">{card}</span>
         <span class="absolute top-2 right-2 deck-card-small-number">{card}</span>
       </div>
@@ -116,8 +117,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    transform: translate(38px, 16px);
-    rotate: 3deg;
+    transform: translate(38px, 16px) rotate(3deg);
+    transition: all .4s ease-in-out;
   }
 
   .deck .deck-card:nth-child(2) {
@@ -143,7 +144,8 @@
     transform: none;
     position: static;
     z-index: 2;
-    rotate: 0deg;
+    transform: rotate(0deg);
+    transition: all .4s ease-in-out;
 
     @apply bg-gray-900 transition duration-200 ease-in-out;
 
