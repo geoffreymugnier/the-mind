@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "run-p dev:*",
-    "dev:vite": "vite",
+    "dev:vite": "vite --host",
     "dev:routify": "routify",
     "build": "routify -b && vite build",
     "preview": "vite preview"

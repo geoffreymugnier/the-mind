@@ -5,6 +5,7 @@
   import room from '../../room';
   import { onMount } from 'svelte';
   import Input from '../../lib/Input.svelte';
+  import Splash from '../../lib/Splash.svelte';
 
   export let lobby;
 
@@ -47,13 +48,16 @@
     $room.level = level;
     $room.lives = lives;
     $room.stars = stars;
+
+    // just a reset for next time player comes in lobby
+    $user.joined = false;
     
     $goto(`/${lobby}/game`);
   })
 </script>
 
 <main>
-  <img src="/gringo.png" class="m-auto mb-5 w-96" alt="Mexican Standoff" />
+  <Splash />
   <h2>{lobby}</h2>
   {#if $user.joined}
     {#if players.length > 1}
@@ -65,7 +69,7 @@
   {:else}
     <form on:submit|preventDefault={handleJoin}>
       <div class="flex gap-2 justify-center">
-        <Input name="username" bind:value={$user.name} placeholder="Entrez votre pseudo" />
+        <Input name="username" bind:value={$user.name} placeholder="Entrez votre pseudo" autofocus />
         <button 
           class="btn btn-primary h-full" 
           disabled={!$user.name}>Rejoindre</button>

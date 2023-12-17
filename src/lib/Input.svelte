@@ -3,12 +3,21 @@
   export let name;
   export let placeholder = "Valeur";
   export { classNames as class };
+  export let autofocus = false;
 
   let classNames = ''
+
+  const handleAutofocus = (input) => {
+    if (autofocus) {
+      input.focus();
+    }
+  }
+
 </script>
 <div class="flex justify-center">
   <div class="mb-3 {classNames}">
     <input
+      use:handleAutofocus
       type="text"
       name={name}
       bind:value

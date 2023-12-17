@@ -4,7 +4,7 @@ import user from "../user";
   export let players;
 </script>
 
-<div class="flex gap-3 justify-center mt-5 overflow-x-auto" style="max-width: 300px">
+<div class="flex gap-3 justify-center mt-5 overflow-x-auto overflow-y-hidden" style="max-width: 300px">
   {#each players as player}
     <div class="text-center">
       <div class="bg-gray-100 font-semibold text-xl rounded-full w-12 h-12 mb-3 mx-auto flex justify-center items-center">

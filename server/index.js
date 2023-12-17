@@ -51,6 +51,10 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("ask_for_lobbies", () => {
+    io.to(socket.id).emit("list_lobbies", Lobbies.list);
+  });
+
   socket.on("join", (lobbyId) => {
     socket.join(lobbyId);
   });
