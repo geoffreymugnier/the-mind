@@ -110,6 +110,7 @@
     border-radius: 6px;
     height: 17vh;
     width: 19vw;
+    max-width: 160px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -131,17 +132,6 @@
 
   .deck .deck-card:nth-child(1) {
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.6);
-
-    @apply bg-gray-900 transition duration-200 ease-in-out;
-
-    &:hover {
-      @apply bg-gray-600;
-
-      span {
-        @apply scale-125;
-      }
-    }
-    
     color: #fff;
     font-weight: 600;
     font-size: 2.5em;
@@ -152,6 +142,16 @@
     position: static;
     z-index: 2;
     rotate: 0deg;
+
+    @apply bg-gray-900 transition duration-200 ease-in-out;
+
+    &:hover {
+      @apply bg-gray-600;
+
+      span {
+        @apply scale-125;
+      }
+    }
 
     .deck-card-small-number {
       font-size: .5em;
